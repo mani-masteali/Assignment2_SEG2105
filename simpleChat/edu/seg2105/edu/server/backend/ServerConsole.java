@@ -8,8 +8,8 @@ public class ServerConsole implements ChatIF {
 	private EchoServer server;
 	private Scanner fromConsole;
 	
-	public ServerConsole(int port) {
-		server = new EchoServer(port);
+	public ServerConsole(EchoServer server) {
+		this.server = server;
 		fromConsole= new Scanner(System.in);
 	}
 	
@@ -21,7 +21,7 @@ public class ServerConsole implements ChatIF {
 		try {
 			while(true) {
 				String msg = fromConsole.nextLine();
-				String serverMsg = "Sercer MSG> "+ msg;
+				String serverMsg = "SERVER MSG> "+ msg;
 				display(serverMsg);
 				server.sendToAllClients(serverMsg);
 			}

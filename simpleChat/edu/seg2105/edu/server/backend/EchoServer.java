@@ -102,12 +102,14 @@ public class EchoServer extends AbstractServer
     {
       port = DEFAULT_PORT; //Set port to 5555
     }
-	
+    
     EchoServer sv = new EchoServer(port);
+    ServerConsole serverConsole = new ServerConsole(sv);
     
     try 
     {
       sv.listen(); //Start listening for connections
+      serverConsole.accept();
     } 
     catch (Exception ex) 
     {
