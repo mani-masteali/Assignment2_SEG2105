@@ -48,6 +48,34 @@ public class EchoServer extends AbstractServer
   public void handleMessageFromClient
     (Object msg, ConnectionToClient client)
   {
+	  String message = msg.toString();
+	  if (message.startsWith("#login")) {
+		  String[] line = message.split(" ");
+		  if(line.length<2) {
+			  try {
+				  client.sendToClient("ERROR: Login ID not specified. Connection closing.");
+				  client.close();
+			  }
+			  catch(Exception e){
+				  System.out.println("Error closing client after invalid login");
+			  }
+			  return;
+		  }
+		  if (client.getInfo("loginId")!=null) {
+			  try {
+				  client.sendToClient("ERROR: Already logged in. Connection closing.");
+				  client.close();
+			  }
+			  catch(Exception e) {
+				  System.out.println("Error closing duplicate login client.");
+			  }
+			  return;
+		  }
+		  String loginId = line[1];
+		  client.setInfo("loginId", loginId);
+		  System.out.println("Client logged in as "+loginId);
+		  return;
+	  }
     System.out.println("Message received: " + msg + " from " + client);
     this.sendToAllClients(msg);
   }
