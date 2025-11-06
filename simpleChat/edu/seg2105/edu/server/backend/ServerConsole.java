@@ -59,7 +59,7 @@ public class ServerConsole implements ChatIF {
 							display("Port set to "+ newPort);
 						}
 						break;
-					case "start":
+					case "#start":
 						if(server.isListening()) {
 							display("Error: Server already listening");
 						}
@@ -73,7 +73,7 @@ public class ServerConsole implements ChatIF {
 							}
 						}
 						break;
-					case "getport":
+					case "#getport":
 						display("Current port: "+server.getPort());
 						break;
 					}
