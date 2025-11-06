@@ -104,5 +104,15 @@ public class ChatClient extends AbstractClient
 	  clientUI.display("Server connection lost unexpectedly. Terminating client");
 	  System.exit(0);
   }
+  @Override
+  protected void connectionEstablished() {
+	  try {
+		  sendToServer("#login " +loginId);
+	  }
+	  catch (IOException e) {
+		  clientUI.display("Error: Could not send login ID to server.");
+	  }
+  }
+  
 }
 //End of ChatClient class
