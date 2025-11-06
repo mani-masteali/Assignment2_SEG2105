@@ -86,6 +86,70 @@ public class ClientConsole implements ChatIF
       while (true) 
       {
         message = fromConsole.nextLine();
+        
+        if(message.startsWith("#")) {
+        	String[] line = message.split(" ");
+        	String command = line[0];
+        	
+        	switch(command) {
+        		
+        		case "#quit":
+        		client.closeConnection();
+        		System.exit(0);
+        		break;
+        		
+        		case "#logoff":
+        			if(client.isConnected()) {
+        			client.closeConnection();
+        			display("Log off successful"); }
+        			else
+        				display("Error: Not currently connected.");
+        			break;
+        		
+        		case "#sethost":
+        			if(client.isConnected()) 
+        				display("Error: Must be logged out to set host.");
+        			else if(line.length<2)
+        				display("Usage: #sethost <hostname>");
+        			else {
+        			client.setHost(line[1]);
+        			display("Host set to "+line[1]);
+        			}
+        			break;
+        			
+        		case "#setport":
+        			if(client.isConnected()) 
+        				display("Error: Must be logged out to set port.");
+        			else if(line.length<2)
+        				display("Usage: #setport <portname>");
+        			else {
+        			client.setPort(Integer.parseInt(line[1]));
+        			display("Port set to "+ line[1]);
+        			}
+        			break;
+        			
+        		case "#login":
+        			if(!client.isConnected()) {
+        				try {
+        					client.openConnection();
+        					display("Log in successful"); }
+        			catch (IOException e) {
+        				display("Error: Could not connect to server");
+        			}
+        	}
+        				else
+        				display("Error: Already connected.");
+        			break;
+        		case "#gethost":
+        			display("Host: "+ client.getHost());
+        			break;
+        		case "#getport":
+        			display("Port: "+client.getPort());
+        			break;
+        			
+        	}
+        }
+        else
         client.handleMessageFromClientUI(message);
       }
     } 
