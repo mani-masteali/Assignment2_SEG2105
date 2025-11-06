@@ -76,8 +76,20 @@ public class EchoServer extends AbstractServer
 		  System.out.println("Client logged in as "+loginId);
 		  return;
 	  }
-    System.out.println("Message received: " + msg + " from " + client);
-    this.sendToAllClients(msg);
+	  Object id = client.getInfo("loginId");
+	  if (id == null) {
+		  try {
+			  client.sendToClient("ERROR: Must login before sending messages. Connection closing.");
+			  client.close();
+		  }
+		  catch (Exception e) {
+			  System.out.println("Error closing unlogged client.");
+		  }
+		  return;
+	  }
+	String taggedMessage = id + ": " + message;
+    System.out.println("Message received: " + message + " from " + id);
+    this.sendToAllClients(taggedMessage);
   }
     
   /**
